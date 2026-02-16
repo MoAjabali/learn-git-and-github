@@ -21,17 +21,49 @@ Imagine working on a team of 10 developers. Without version control, you would b
 - **Git**: The tool that runs on your computer. It manages your local history.
 - **GitHub**: A cloud hosting service for Git repositories. It provides the "social" features: Pull Requests, Issue Tracking, and a Web Interface.
 
-**Professional Tip**: There are alternatives to GitHub, like **GitLab** and **Bitbucket**, but they all use **Git** under the hood. Once you know Git, you can use any of them.
+---
+
+## 3. Remote Connectivity: HTTPS vs. SSH (Deep Dive)
+To move code between your computer and GitHub, you need a "secure tunnel." There are two main ways to build this tunnel:
+
+| Feature | HTTPS | SSH (Secure Shell) |
+| :--- | :--- | :--- |
+| **URL Format** | `https://github.com/user/repo.git` | `git@github.com:user/repo.git` |
+| **Authentication** | Asks for Username + Personal Access Token (PAT) | Uses a "Key Pair" stored on your computer |
+| **Convenience** | Easy setup; works everywhere | Setup takes 5 mins; no passwords ever again |
+| **Behind the Scenes** | Standard web protocol (Port 443) | Encrypted tunnel (Port 22) |
+
+### Option A: Connecting via HTTPS
+This is the "standard" way. When you `git push`, GitHub will ask for your credentials.
+> [!IMPORTANT]
+> Since 2021, GitHub **does not accept your password** for HTTPS. You must generate a **Personal Access Token (PAT)** in your GitHub Settings > Developer Settings.
+
+### Option B: Connecting via SSH (The Pro Way)
+With SSH, your computer and GitHub exchange "secret handshakes."
+
+#### How it works:
+1.  **Private Key**: Stays on your computer (like a real key).
+2.  **Public Key**: You upload it to GitHub (like a lock).
+When you connect, Git uses your private key to prove it's you, and GitHub verifies it with the public key.
+
+#### Steps to set up SSH:
+```bash
+# 1. Generate a new key (press Enter to accept defaults)
+ssh-keygen -t ed25519 -C "your_email@example.com"
+
+# 2. Copy the Public Key to your clipboard
+cat ~/.ssh/id_ed25519.pub
+
+# 3. Add to GitHub:
+# Go to GitHub Settings > SSH and GPG keys > New SSH Key
+# Paste the key and save!
+```
 
 ---
 
-## 3. Professional Installation & Setup
-### Installation
-- **Windows**: Use [Git for Windows](https://git-scm.com/). It includes "Git Bash," which gives you a professional Linux-like terminal on Windows.
-- **macOS/Linux**: Most developers use the terminal. Run `git --version` to see if you already have it.
-
+## 4. Professional Installation & Setup
 ### The "Must-Have" Configurations
-Beyond just your name and email, professionals set up a few more things:
+Run these once on your machine:
 
 ```bash
 # 1. Essential: Your Identity
@@ -39,20 +71,15 @@ git config --global user.name "John Doe"
 git config --global user.email "john@example.com"
 
 # 2. Helpful: Default Branch Name
-# Many teams now prefer 'main' over the old default 'master'
 git config --global init.defaultBranch main
 
 # 3. Visual: Colored terminal output
 git config --global color.ui auto
 ```
 
-### SSH vs. HTTPS (Secret to the Pros)
-- **HTTPS**: High security but asks for your password/token often. Good for beginners.
-- **SSH**: Uses a "key" on your computer. Once set up, you never have to type a password again. Professional developers almost always use SSH.
-
 ---
 
-## 4. The `.git` Folder: The Brain
+## 5. The `.git` Folder: The Brain
 When you start a project, Git creates a hidden folder called `.git`. 
 > [!CAUTION]
 > If you delete this folder, your project is still there, but all your history, branches, and versions are **GONE**. Treat this folder with respect.
@@ -60,4 +87,4 @@ When you start a project, Git creates a hidden folder called `.git`.
 ---
 
 ## What's Next?
-In the next module, we will get our hands dirty with the **Core Workflow**: the commands you will use 90% of the time.
+In the next module, we will get our hands dirty with the **Core Workflow** and how to upload your first project to GitHub!
