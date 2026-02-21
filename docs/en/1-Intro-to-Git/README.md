@@ -13,13 +13,15 @@ Imagine working on a team of 10 developers. Without version control, you would b
 ### The Evolution: Centralized vs. Distributed (DVCS)
 - **Old way (SVN/CVS)**: There is one central server. If it goes down, nobody can save their work. You must be online to commit.
 - **The Git way (Distributed)**: **Every developer has a full copy of the entire history** on their own computer.
-    - *Why this matters*: You can work offline, it’s incredibly fast, and there is no single point of failure. If GitHub goes down, the project lives on every developer's laptop.
 
 ---
 
-## 2. Git vs GitHub: The Cloud Connection
+## 2. Git & GitHub: The Cloud Connection
 - **Git**: The tool that runs on your computer. It manages your local history.
 - **GitHub**: A cloud hosting service for Git repositories. It provides the "social" features: Pull Requests, Issue Tracking, and a Web Interface.
+
+> [!TIP]
+> **Pro Tip**: There are alternatives like **GitLab** and **Bitbucket**, but they all use **Git** at their core. Once you learn Git, you can use any of them.
 
 ---
 

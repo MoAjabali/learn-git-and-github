@@ -3,11 +3,11 @@ layout: home
 
 hero:
   name: "Git & GitHub"
-  text: "From Zero to Hero"
-  tagline: "Master the industry-standard version control system and collaboration platform."
+  text: "From Zero to Mastery"
+  tagline: "Master the world's most popular version control system and collaboration platform."
   actions:
     - theme: brand
-      text: Get Started
+      text: Start Now
       link: /en/1-Intro-to-Git/README
     - theme: alt
       text: Official Git Docs

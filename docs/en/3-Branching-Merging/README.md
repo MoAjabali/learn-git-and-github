@@ -7,23 +7,70 @@ Think of Git's history as a tree. The `main` branch is the trunk. Every time you
 - **Why?** If you break something in your branch, the trunk remains safe. 
 - **Best Practice**: Never code directly on the `main` branch. Always create a feature branch.
 
-### Creating and Switching Like a Pro
+### Branching Like a Pro
+#### Create and switch to a new branch
 ```bash
-# The modern way to create and switch to a branch immediately
-git switch -c feature/new-login-system
+git switch -c feature/login-system
+```
+This:
+* Creates a new branch.
+* Switches you to it immediately.
 
-# To see a list of all your branches
+---
+
+#### List branches
+```bash
+git branch
+```
+To see all local and remote branches:
+```bash
 git branch -a
-
-# To delete a branch after it's merged
-git branch -d feature/old-task
 ```
 
 ---
 
-## 2. Bringing Changes Back: Merge vs. Rebase
+#### Switching branches
+```bash
+git switch main
+```
+
+---
+
+#### Deleting a branch after finishing
+```bash
+git branch -d feature/login-system
+```
+If Git refuses because it's not merged:
+```bash
+git branch -D feature/login-system
+```
+Only use `-D` if you are sure you don't need the history.
+
+---
+
+## 2. Merging Branches
+After finishing work on a feature branch, it should be merged into `main`.
+
+### Recommended Strategy
+```bash
+git switch main
+git merge --no-ff feature/login-system
+```
+
+Why `--no-ff`?
+Because it:
+* Prevents a "Fast-forward" merge.
+* Creates a clear "Merge Commit".
+* Keeps the history tree clear, similar to a GitHub Pull Request.
+
+After merging:
+```bash
+git push
+```
 This is a common interview question and a daily choice for developers.
 
+---
+## 3. Bringing Changes Back: Merge vs. Rebase
 ### A. The Merge (`git merge`)
 - **How**: It takes the two histories and ties them together with a new "Merge Commit".
 - **Why**: It preserves the exact historical timeline of when things happened.
@@ -39,7 +86,7 @@ This is a common interview question and a daily choice for developers.
 
 ---
 
-## 3. Resolving Conflicts (The Professional Way)
+## 4. Resolving Conflicts (The Professional Way)
 A conflict happens when Git doesn't know which version of a line to keep. This usually happens during a merge or rebase.
 
 ### Step 1: Identify the Mess
@@ -64,7 +111,7 @@ const color = 'red';
 
 ---
 
-## 4. Temporary Saving: `git stash`
+## 5. Temporary Saving: `git stash`
 Sometimes you're in the middle of a mess and your boss asks for an urgent fix on `main`.
 ```bash
 # 1. Save your messy work to a secret pocket

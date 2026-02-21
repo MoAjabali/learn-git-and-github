@@ -46,8 +46,8 @@ git push -u origin main
 > [!TIP]
 > The `-u` flag stands for "upstream". It links your local `main` to GitHub's `main` so that next time you only need to type `git push`.
 
-### Scenario B: You want to start from a GitHub repo (`git clone`)
-If the project already exists on GitHub (or you just created one with a README):
+### Scenario B: Starting from an existing project on GitHub (`git clone`)
+If the project already exists or you created it with a README:
 ```bash
 # 1. Copy the URL from GitHub
 # 2. Download the project to your computer
@@ -56,31 +56,31 @@ git clone https://github.com/username/repo-name.git
 # 3. Enter the folder and start working!
 cd repo-name
 ```
-*Why use Clone?* It automatically sets up the "remote" connection for you.
+*Why use Clone?* Because it automatically sets up the connection to GitHub for you.
 
 ---
 
 ## 3. Dealing with Sync Issues
-Sometimes, your branch on GitHub has files (like a README) that your computer doesn't have. Git will block your push.
+Sometimes the GitHub repository contains files (like a README) that are not on your machine, which blocks your Push.
 
 **The Solution**:
 ```bash
-# 1. Pull the changes from GitHub first
+# 1. Pull changes from GitHub first
 git pull origin main --allow-unrelated-histories
 
-# 2. Fix any conflicts, then push
+# 2. Fix any conflicts (if any), then push again
 git push origin main
 ```
 
 ---
 
-## 4. Verifying your Connection
-How do you know if Git is connected to the right place?
+## 4. Verifying the Connection
+How do you make sure Git is linked to the right place?
 ```bash
-# List all remotes
+# Show all remote links
 git remote -v
 ```
-You should see two lines (fetch and push) pointing to your GitHub repository.
+You should see two links (fetch and push) pointing to your GitHub repository.
 
 ---
 

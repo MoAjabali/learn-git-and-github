@@ -9,16 +9,16 @@ In professional development, things go wrong. You might commit a secret by accid
 | :--- | :--- | :--- | :--- |
 | **`--soft`** | Erased from history | They stay in the **Staging Area** | "I forgot to add one file to my last commit." |
 | **`--mixed`** | Erased from history | They stay in your **Folder** (Unstaged) | "I want to redo my work and add/commit differently." |
-| **`--hard`** | Erased from history | **DELETED PERMANENTLY** | "Everything I just did was a disaster. Wipe it out." |
+| **`--hard`** | Erased from history | **DELETED PERMANENTLY** | Everything I just did was a disaster. Wipe it out. |
 
 ---
 
 ## 2. Practical Scenarios
 
 ### Scenario 1: I forgot to add a file (The Soft Reset)
-You just made a commit, but realized you forgot to add `config.js`. You want to "undo" the commit but keep the code ready to be committed again.
+You just made a commit, but realized you forgot to add `config.js`. You don't want to lose your work, just undo the commit to add the file and try again.
 ```bash
-# Move back one commit, keep changes staged
+# Move back one commit, keep changes in the Staging Area
 git reset --soft HEAD~1
 
 # Add the missing file
@@ -28,48 +28,188 @@ git add config.js
 git commit -m "feat: add initial configuration"
 ```
 
-### Scenario 2: I want to reorganize my work (The Mixed Reset)
-You made 3 commits that are a mess. You want to undo the commits and the staging, but keep the code in your folder to restart the process.
+### Scenario 2: I want to wipe out disastrous changes (The Hard Reset)
+If you made changes that completely broke the project and you want to return to exactly how things were when the project was stable.
 ```bash
-# Default mode is --mixed
-git reset HEAD~3
-
-# Now all your files are 'untracked'/modified. 
-# You can add them back in cleaner groups.
-```
-
-### Scenario 3: The Nuclear Option (The Hard Reset)
-You tried a new library, it broke everything, and you just want to go back to exactly how things were 30 minutes ago.
-```bash
-# ⚠️ WARNING: This deletes all uncommitted changes!
+# ⚠️ WARNING: Any unsaved changes will be permanently lost!
 git reset --hard HEAD~1
 ```
 
----
-
-## 3. `git reset` vs. `git revert`
-Which one should you use?
-
-- **`git reset`**: **Rewrites History**. It's like a time machine that erases the future. 
-    - *Rule*: Only use it on your local, private branches.
-- **`git revert`**: **Adds to History**. It creates a *new* commit that does the exact opposite of the one you want to undo.
-    - *Rule*: Use this for shared branches (like `main`) so you don't break history for your teammates.
+### Scenario 3: "I made a typo in my last commit message"
+If you haven't pushed the commit to GitHub yet, you can fix it:
+```bash
+git commit --amend -m "The correct message here"
+```
 
 ---
 
-## 4. Professional Naming (Conventional Commits)
-To keep your history readable, use these types for every commit:
-- `feat`: New feature
-- `fix`: Bug fix
-- `refactor`: Changing code logic without changing behavior
-- `style`: Formatting/CSS only
-- `docs`: Documentation
-- `perf`: Performance improvements
-- `test`: Adding tests
+## 3. The Safe Alternative: `git revert`
+If you have already pushed your commit to the server (GitHub) and don't want to rewrite the project history shared with your teammates:
+```bash
+# Creates a new commit that reverses the effects of the last commit
+git revert HEAD
+```
+This is better for teamwork because it doesn't delete history; it adds to it.
+
+---
+
+## 4. Golden Advice Before Resetting
+Before using `--hard` or any type of reset, always check your project's status:
+```bash
+git status  # To see if you have unsaved changes
+git log --oneline -3  # To confirm which commit you are going back to
+```
+
+---
+
+## 5. The Power of `.gitignore`
+As mentioned before, Git should only track what is necessary. Here is a detailed look at what a professional `.gitignore` file for a modern web project contains:
+
+```text
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment files (Secrets! Never upload these)
+.env
+.env.local
+.env.*.local
+
+# Editor files (IDE Files)
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+```
+
+> [!WARNING]
+> If you add a file to Git and then later add it to `.gitignore`, Git will not automatically stop tracking it.
+> To remove it from tracking without deleting the file from your computer:
+> ```bash
+> git rm --cached filename
+> ```
+> Then:
+> ```bash
+> git commit -m "chore: stop tracking file"
+> ```
+
+---
+
+## 6. The Power of `.gitattributes`
+While `.gitignore` controls **what is tracked**, `.gitattributes` controls **how Git handles the tracked files**.
+
+This is a relatively advanced file, but important in professional projects.
+
+### 1- Standardizing Line Endings
+The Problem:
+* Windows uses CRLF
+* macOS/Linux uses LF
+* This leads to "invisible" differences in commits.
+
+The Solution inside `.gitattributes`:
+```text
+* text=auto
+```
+Or more specifically:
+```text
+*.js text eol=lf
+*.ts text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+```
+This forces LF line endings across all systems.
+
+### 2- Defining Binary Files
+Some files should not be compared as text:
+```text
+*.png binary
+*.jpg binary
+*.pdf binary
+```
+This prevents Git from trying to display unreadable diffs.
+
+### 3- Customizing the Merge Strategy
+
+You can specify how certain file types should be merged:
+
+```text
+*.lock merge=ours
+```
+
+Practical example:
+Some teams choose not to merge lock files automatically but instead rely on the current branch's version.
+
+### 4- Ignoring Whitespace Differences
+
+```text
+*.md whitespace=blank-at-eol
+```
+
+This helps reduce noise in comparisons.
+---
+
+## 7. Common Problems & How to Act
+
+### 1- Outgoing changes
+You have local commits that haven't been pushed.
+Solution:
+```bash
+git push
+```
+
+### 2- Deleted a branch by mistake
+Check the reflog:
+```bash
+git reflog
+```
+Then:
+```bash
+git checkout -b branch-name <commit-hash>
+```
+
+### 3- main is ahead or behind remote
+Check:
+```bash
+git status
+```
+If you see:
+`Your branch is ahead of 'origin/main'`
+Solution:
+```bash
+git push
+```
+
+---
+
+## 8. Best Workflow for a Solo Developer
+```bash
+# Create a branch
+git switch -c feature/x
+
+# Work
+git add .
+git commit -m "feat: add x"
+
+# Merge
+git switch main
+git merge --no-ff feature/x
+git push
+
+# Delete branch
+git branch -d feature/x
+```
+This approach is organized, safe, and keeps your project history clear.
 
 ---
 
 ## Final Thoughts
 You now have the tools to build, share, and even "undo" your professional work. The key to mastering Git is **not fearing the commands** but understanding how they move your code through the three stages.
 
-Happy Coding! 🚀
+Good luck on your coding journey! 🚀
