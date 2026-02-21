@@ -44,6 +44,12 @@ git reset --hard HEAD~1
 git revert HEAD
 # هذا أفضل للعمل الجماعي لأنه لا يعيد كتابة التاريخ بل يضيف عليه
 ```
+---
+### السيناريو 4: "أخطأت في كتابة رسالة الـ commit الأخيرة"
+إذا لم تكن قد رفعت الـ commit بعد إلى GitHub، يمكنك تعديله:
+```bash
+git commit --amend -m "الرسالة الصحيحة هنا"
+```
 
 ---
 
@@ -56,16 +62,183 @@ git log --oneline -3  # للتأكد من الـ commit الذي تريد الع
 
 ---
 
-## 5. اتفاقيات التسمية الاحترافية (Conventional Commits)
-تذكر دائماً استخدام الأنواع التالية لرسائل الالتزام الخاصة بك:
-- `feat`: ميزة جديدة للمستخدم.
-- `fix`: إصلاح خطأ برمجي.
-- `refactor`: تحسين جودة الكود دون تغيير وظيفته.
-- `style`: تنسيق الكود أو تعديلات CSS.
-- `docs`: تحديث التوثيق.
-- `perf`: تحسين الأداء.
-- `test`: إضافة اختبارات.
+## 5. قوة ملف `.gitignore`
+كما ذكرنا سابقاً، يجب على Git تتبع ما هو ضروري فقط. إليك نظرة مفصلة على ما يحتوي عليه ملف `.gitignore` احترافي لمشروع ويب حديث:
 
+```text
+# المجلدات التابعة (Dependencies)
+node_modules/
+.pnpm-store/
+
+# مخرجات البناء (Build outputs)
+dist/
+build/
+.next/
+
+# ملفات البيئة (الأسرار! لا تقم برفعها أبداً)
+.env
+.env.local
+.env.*.local
+
+# ملفات المحرر (IDE Files)
+.vscode/
+.idea/
+
+# ملفات النظام
+.DS_Store
+Thumbs.db
+```
+
+> [!WARNING]
+> إذا قمت بإضافة ملف إلى Git ثم أضفته لاحقًا إلى .gitignore، فلن يتوقف Git عن تتبعه تلقائيًا.
+> لحذفه من التتبع دون حذف الملف من جهازك:
+> ```bash
+> git rm --cached filename
+> ```
+> ثم:
+> ```bash
+> git commit -m "chore: stop tracking file"
+> ```
+
+---
+## 6. قوة ملف `.gitattributes`
+
+إذا كان `.gitignore` يتحكم في **ما يتم تتبعه**،
+فإن `.gitattributes` يتحكم في **كيفية تعامل Git مع الملفات التي يتم تتبعها**.
+
+هو ملف متقدم نسبيًا، لكنه مهم في المشاريع الاحترافية.
+
+
+### 1- توحيد أسطر نهاية السطر (Line Endings)
+
+المشكلة:
+
+* Windows يستخدم CRLF
+* macOS/Linux يستخدم LF
+* يؤدي ذلك إلى اختلافات وهمية في commits
+
+الحل داخل `.gitattributes`:
+
+```text
+* text=auto
+```
+
+أو بشكل أدق:
+
+```text
+*.js text eol=lf
+*.ts text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+```
+
+هذا يفرض توحيد نهاية السطر في جميع الأنظمة.
+
+### 2- تعريف الملفات الثنائية (Binary Files)
+
+بعض الملفات لا يجب أن يحاول Git مقارنتها كنصوص:
+
+```text
+*.png binary
+*.jpg binary
+*.pdf binary
+```
+
+هذا يمنع Git من محاولة عرض اختلافات غير مفهومة.
+
+### 3- تخصيص استراتيجية الدمج
+
+يمكنك تحديد كيفية دمج أنواع معينة من الملفات:
+
+```text
+*.lock merge=ours
+```
+
+مثال عملي:
+بعض الفرق تختار عدم دمج ملفات lock تلقائيًا بل الاعتماد على نسخة الفرع الحالي.
+
+### 4- تجاهل الاختلافات في المسافات البيضاء
+
+```text
+*.md whitespace=blank-at-eol
+```
+
+يساعد على تقليل الضوضاء في المقارنات.
+
+---
+## 7. مشاكل شائعة وكيف تتصرف
+
+### 1- Outgoing changes
+
+لديك commits محليًا لم يتم رفعها.
+
+الحل:
+
+```bash
+git push
+```
+
+### 2- حذفت فرعًا بالخطأ
+
+تحقق من reflog:
+
+```bash
+git reflog
+```
+
+ثم:
+
+```bash
+git checkout -b branch-name <commit-hash>
+```
+
+### 3- main متقدم أو متأخر عن الريموت
+
+تحقق:
+
+```bash
+git status
+```
+
+إذا ظهرت:
+
+```
+Your branch is ahead of 'origin/main'
+```
+
+الحل:
+
+```bash
+git push
+```
+
+---
+
+## 8. أفضل Workflow لمطور يعمل منفردًا
+
+```bash
+# إنشاء فرع
+git switch -c feature/x
+
+# العمل
+git add .
+git commit -m "feat: add x"
+
+# الدمج
+git switch main
+git merge --no-ff feature/x
+git push
+
+# حذف الفرع
+git branch -d feature/x
+```
+
+هذا الأسلوب:
+
+* منظم
+* آمن
+* واضح في الشجرة
+* قريب من أسلوب الفرق الاحترافية
 ---
 
 ## كلمات ختامية
