@@ -42,35 +42,41 @@
     padding-left: 32px;
   }
 }
+
 @media (min-width: 1440px) {
-   html[lang^="ar"] .VPNavBar.has-sidebar .content {
-      padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
-      padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
+  html[lang^="ar"] .VPNavBar.has-sidebar .content {
+    padding-left: calc((100vw - var(--vp-layout-max-width)) / 2 + 32px);
+    padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
   }
 }
+
 /* Divider */
 /* This is the divider */
 @media (min-width: 960px) {
   html[lang^="ar"] .VPNavBar.has-sidebar .divider {
     padding-right: var(--vp-sidebar-width);
-    padding-left: 0px;  
+    padding-left: 0px;
   }
 }
+
 @media (min-width: 1440px) {
   html[lang^="ar"] .VPNavBar.has-sidebar .divider {
     padding-right: calc((100vw - var(--vp-layout-max-width)) / 2 + var(--vp-sidebar-width));
     padding-left: 0px;
   }
 }
+
 /* search */
 @media (min-width: 768px) {
   html[lang^="ar"] .DocSearch-Button .DocSearch-Search-Icon {
-    margin: 0 0 0 8px ;
+    margin: 0 0 0 8px;
   }
+
   html[lang^="ar"] .VPNavBarSearch {
     padding-right: 24px;
   }
 }
+
 /* === End Nav === */
 
 /* Sidebar */
@@ -82,24 +88,28 @@
     padding-left: 64px;
   }
 }
+
 /* The title (Logo) */
 /* Title */
 @media (min-width: 960px) {
-  html[lang^="ar"] .VPNavBar.has-sidebar .container > .title {
+  html[lang^="ar"] .VPNavBar.has-sidebar .container>.title {
     right: 0;
   }
 }
+
 @media (min-width: 1440px) {
-  html[lang^="ar"] .VPNavBar.has-sidebar .container > .title {
+  html[lang^="ar"] .VPNavBar.has-sidebar .container>.title {
     padding-right: max(32px, calc((100% - (var(--vp-layout-max-width) - 64px)) / 2));
     width: calc((100% - (var(--vp-layout-max-width) - 64px)) / 2 + var(--vp-sidebar-width) - 32px);
     padding-left: 64px;
   }
 }
+
 html[lang^="ar"] .menu-icon {
   margin-left: 8px;
   font-size: 14px;
 }
+
 /* === End Sidebar === */
 
 /* topic section (local nav) */
@@ -109,18 +119,22 @@ html[lang^="ar"] .VPDocAside .content {
   border-left: none;
   padding-left: none;
 }
+
 html[lang^="ar"] .outline-marker {
   right: -1px;
 }
+
 @media (min-width: 960px) {
   html[lang^="ar"] .VPLocalNav.has-sidebar {
     padding-right: var(--vp-sidebar-width);
   }
 }
+
 html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
   right: 16px;
   left: 16px;
 }
+
 @media (min-width: 960px) {
   html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
     left: auto;
@@ -128,6 +142,7 @@ html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
     width: 320px;
   }
 }
+
 /* End Topics */
 
 /* Content */
@@ -139,8 +154,9 @@ html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
     padding-left: 0;
   }
 }
+
 @media (min-width: 1280px) {
-  html[lang^="ar"] .VPDoc > .container > .content {
+  html[lang^="ar"] .VPDoc>.container>.content {
     order: 1;
     margin: 0;
     max-width: 700px;
@@ -150,14 +166,16 @@ html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
 /* .VPDoc{
   max-width: 100vw;
 } */
-@media (max-width: 768px){
-  html[lang^="ar"] .VPSidebar{
+@media (max-width: 768px) {
+  html[lang^="ar"] .VPSidebar {
     transform: translateX(100%);
   }
-  html[lang^="ar"] .VPSidebar.open{
+
+  html[lang^="ar"] .VPSidebar.open {
     transform: translateX(0);
   }
 }
+
 /* === End Content === */
 @media (min-width: 960px) {
   html[lang^="ar"] .VPNavBarSearch {
@@ -168,16 +186,20 @@ html[lang^="ar"] .VPLocalNavOutlineDropdown .items {
 html[lang^="ar"] .DocSearch-Button .DocSearch-Button-Placeholder {
   padding: 0 0 0 16px;
 }
-html[lang^="ar"] .menu + .appearance::before, html[lang^="ar"] .translations + .appearance::before {
+
+html[lang^="ar"] .menu+.appearance::before,
+html[lang^="ar"] .translations+.appearance::before {
   margin: 0 8px 0 16px;
 }
-html[lang^="ar"] .appearance + .social-links::before {
+
+html[lang^="ar"] .appearance+.social-links::before {
   margin: 0 16px 0 8px;
 }
 
-html[lang^="ar"] .VPNavBarTranslations  .button {
-  padding: 0 12px 0 0 ;
+html[lang^="ar"] .VPNavBarTranslations .button {
+  padding: 0 12px 0 0;
 }
+
 html[lang^="ar"] .VPSwitchAppearance .button {
   margin-left: 12px
 }
@@ -189,4 +211,10 @@ html[lang^="ar"] .VPSidebar {
 html[lang^="ar"] .VPFlyout .menu {
   right: auto;
   left: 0;
+}
+
+.vp-doc div[class*='language-'],
+.vp-block {
+  margin: 16px 0px;
+
 }
